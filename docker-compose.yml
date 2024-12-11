@@ -6,4 +6,5 @@ services:
     volumes:
       - .:/app
     command: sh -c "cargo watch -w src --poll -x run"
-    tty: true  # Allows the container to run interactively
+    stdin_open: true   # Keeps stdin open for interaction
+    tty: true          # Allocates a pseudo-TTY
