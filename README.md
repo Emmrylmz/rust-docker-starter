@@ -55,37 +55,57 @@ docker-compose down
 project-directory/
 │
 ├── src/
-│   ├── inventory_manager.rs  # Inventory management logic
-│   ├── transaction_manager.rs # Transaction management logic
-│   ├── report_manager.rs      # Reporting logic
-│   └── main.rs               # Application entry point
+│   ├── app/                       # Application modules
+│   │   ├── errors/                # Custom error definitions
+│   │   ├── inventory/             # Inventory logic
+│   │   │   ├── inventory_manager.rs
+│   │   │   └── mod.rs
+│   │   ├── reports/               # Reporting logic
+│   │   │   ├── report_manager.rs
+│   │   │   └── mod.rs
+│   │   ├── tests/                 # Test suite
+│   │   │   ├── tests.rs
+│   │   │   └── mod.rs
+│   │   ├── transactions/          # Transaction logic
+│   │   │   ├── transaction.rs
+│   │   │   └── mod.rs
+│   │   └── mod.rs                 # Application module root
+│   │
+│   ├── inventory.csv              # Inventory CSV data
+│   ├── transactionHistory.csv     # Transaction history CSV
+│   ├── main.rs                    # Application entry point
 │
-├── Dockerfile                # Docker configuration file
-├── docker-compose.yml        # Docker Compose configuration
-└── README.md                 # Project documentation
+├── Dockerfile                     # Docker configuration file
+├── docker-compose.yml             # Docker Compose configuration
+├── Cargo.toml                     # Rust project dependencies
+├── Cargo.lock                     # Cargo lock file
+└── README.md                      # Project documentation
 ```
 
 ### File Functions
 
-- `src/inventory_manager.rs`: Handles inventory-related logic such as adding, editing, and deleting products.
-- `src/transaction_manager.rs`: Manages sales and purchase transactions.
-- `src/report_manager.rs`: Generates inventory and transaction reports.
+- `app/errors/`: Contains custom error types used across the application.
+- `app/inventory/`: Handles inventory-related logic such as adding, editing, and deleting products.
+- `app/transactions/`: Manages sales and purchase transactions.
+- `app/reports/`: Generates inventory and transaction reports.
+- `app/tests/`: Contains integration tests and helper test modules.
 - `src/main.rs`: Entry point for running the application.
-- `Dockerfile`: Configures the Docker environment for the application.
-- `docker-compose.yml`: Manages multiple containers for the application.
+- `inventory.csv`: CSV file for storing product inventory.
+- `transactionHistory.csv`: CSV file for storing transaction history.
 
 ## 🛠 Tools Used
 
 - **Rust**: For backend application logic.
 - **cargo-watch**: Automatically restarts the application and runs tests on code changes.
 - **Docker & Docker Compose**: For containerizing and managing the application.
+- **CSV**: Data storage format for inventory and transactions.
 
 ## 🧠 Application Logic
 
 ### Inventory Management
 The `InventoryManager` module provides functionalities to:
 - Add, edit, and delete products.
-- Retrieve the current inventory.
+- Load and save inventory data from/to a CSV file.
 
 ### Transaction Management
 The `TransactionManager` module includes features to:
