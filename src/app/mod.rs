@@ -2,19 +2,21 @@ pub mod errors;
 pub mod inventory;
 pub mod reports;
 pub mod transactions;
+pub mod tests;
 
-use crate::app::errors::errors::CustomError;
+use csv::{Reader, Writer};
+use reports::report_manager;
+
 use crate::app::inventory::inventory_manager::{InventoryManager, Product};
 use crate::app::reports::report_manager::ReportManager;
 use crate::app::transactions::transaction::{TotalTransaction, TransactionManager};
-use csv::{Reader, Writer};
 use std::error::Error;
-use std::path::Path;
-use std::{io, result};
+use std::{io};
 
 pub struct App {
     inventory_manager: InventoryManager,
     transaction_manager: TransactionManager,
+    report_manager: ReportManager
 }
 
 impl App {
@@ -40,9 +42,11 @@ impl App {
         let mut transaction_manager = TransactionManager::new();
         transaction_manager.load_transaction_history(transaction_history);
 
+
         Ok(Self {
             inventory_manager,
-            transaction_manager: TransactionManager::new(),
+            transaction_manager,
+            report_manager: ReportManager,
         })
     }
 
@@ -70,23 +74,33 @@ impl App {
         self.save_inventory("products.csv").unwrap();
     }
 
-    fn manage_inventory(&mut self) {
-        println!("Manage inventory here...");
-        // Add user logic for adding/deleting/editing products
+    fn manage_inventory(&mut self){
+        self.inventory_manager.manage_inventory();
     }
 
     fn record_sale(&mut self) {
-        self.transaction_manager
-            .record_sale(&mut self.inventory_manager);
+        match self
+            .transaction_manager
+            .record_sale(&mut self.inventory_manager)
+        {
+            Ok(_) => println!("Sale recorded successfully!"),
+            Err(e) => eprintln!("Error recording sale: {}", e),
+        }
     }
 
     fn record_purchase(&mut self) {
-        self.transaction_manager
-            .record_purchase(&mut self.inventory_manager);
+        match self
+            .transaction_manager
+            .record_purchase(&mut self.inventory_manager)
+        {
+            Ok(_) => println!("Purchase recorded successfully!"),
+            Err(e) => eprintln!("Error recording purchase: {}", e),
+        }
     }
+
     fn generate_reports(&self) {
         ReportManager::display_inventory(self.inventory_manager.get_inventory());
-        ReportManager::display_transactions(&self.transaction_manager.get_transactions());
+        ReportManager::display_transactions(&self.transaction_manager);
     }
 
     fn save_inventory(&self, file_path: &str) -> Result<(), Box<dyn Error>> {
