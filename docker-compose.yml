@@ -5,5 +5,6 @@ services:
     container_name: "cargo-watch-example"
     volumes:
       - .:/app
-    command: sh -c "cargo watch -w src --poll -x test"
-    tty: true  # Allows the container to run interactively
+    command: sh -c "cargo watch -w src --poll -x run"
+    stdin_open: true   # Keeps stdin open for interaction
+    tty: true          # Allocates a pseudo-TTY
