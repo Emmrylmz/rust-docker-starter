@@ -17,7 +17,7 @@ Before running the project, ensure the following tools are installed on your sys
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Emmrylmz/inventory-management.git
+git clone https://github.com/Emmrylmz/rust-docker-starter.git
 
 # Navigate to the project directory
 cd <repository-folder>
