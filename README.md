@@ -1,75 +1,98 @@
-# Rust Starter Projesi 🦀🐳
+# Inventory Management Application 🛒
 
-## 📋 Proje Açıklaması
+## 📋 Project Description
 
-Bu proje, Rust kullanarak hızlı bir başlangıç yapmak isteyenler için hazırlanmış örnek bir projedir. Docker ve Docker Compose ile entegre edilmiştir.
+This project is a Rust-based inventory management application designed to manage products, transactions, and generate reports. The project is integrated with Docker and Docker Compose for seamless setup and execution.
 
-## 🛠 Gereksinimler
+## 🛠 Requirements
 
-Projeyi çalıştırmadan önce aşağıdaki yazılımların sisteminizde kurulu olduğundan emin olun:
+Before running the project, ensure the following tools are installed on your system:
 
 - Docker
 - Docker Compose
 - Git
 
-## 🚀 Kurulum ve Başlangıç
+## 🚀 Setup and Start
 
-### 1. Depoyu Klonlama
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Emmrylmz/rust-docker-starter.git
+git clone https://github.com/Emmrylmz/inventory-management.git
 
-# Proje dizinine girme
+# Navigate to the project directory
 cd <repository-folder>
 ```
 
-### 2. Docker Compose ile Çalıştırma
+### 2. Run with Docker Compose
 
 ```bash
-# Projeyi ayağa kaldırma
+# Start the project
 docker-compose up --build
 
-# Arka planda çalıştırma
+# Run in detached mode
 docker-compose up -d --build
 ```
 
-## 🔍 Kodları İzleme ve Test Çalıştırma
+## 🔍 Monitoring and Testing
 
-`cargo-watch` container içinde otomatik olarak kaynak dosyalarını izler ve testleri çalıştırır. Kodda bir değişiklik yaptığınızda otomatik olarak yeniden çalışacaktır.
+`cargo-watch` inside the container automatically watches source files and runs tests. Any code changes will automatically restart the application.
 
-### Testleri Çalıştırma
+### Run Tests
 
 ```bash
 docker-compose run app cargo test
 ```
 
-### Hizmeti Durdurma
+### Stop the Service
 
 ```bash
 docker-compose down
 ```
 
-## 📂 Proje Yapısı
+## 📂 Project Structure
 
 ```
-proje-dizini/
+project-directory/
 │
 ├── src/
-│   └── main.rs         # Ana Rust kaynak dosyası
+│   ├── inventory_manager.rs  # Inventory management logic
+│   ├── transaction_manager.rs # Transaction management logic
+│   ├── report_manager.rs      # Reporting logic
+│   └── main.rs               # Application entry point
 │
-├── Dockerfile          # Docker yapılandırma dosyası
-├── docker-compose.yml  # Docker Compose yapılandırması
-└── README.md           # Proje dökümantasyonu
+├── Dockerfile                # Docker configuration file
+├── docker-compose.yml        # Docker Compose configuration
+└── README.md                 # Project documentation
 ```
 
-### Dosya İşlevleri
+### File Functions
 
-- `src/main.rs`: Rust projesinin ana dosyası. Basit bir "Hello World!" uygulamasını içerir.
-- `Dockerfile`: Rust projesini çalıştırmak için Docker yapılandırma dosyası.
-- `docker-compose.yml`: Çoklu container yönetimi için Compose yapılandırma dosyası.
+- `src/inventory_manager.rs`: Handles inventory-related logic such as adding, editing, and deleting products.
+- `src/transaction_manager.rs`: Manages sales and purchase transactions.
+- `src/report_manager.rs`: Generates inventory and transaction reports.
+- `src/main.rs`: Entry point for running the application.
+- `Dockerfile`: Configures the Docker environment for the application.
+- `docker-compose.yml`: Manages multiple containers for the application.
 
-## 🛠 Kullanılan Araçlar
+## 🛠 Tools Used
 
-- **Rust**: Alpine tabanlı Docker imajı ile hafif bir Rust çalışma ortamı
-- **cargo-watch**: Kod değişikliklerini izlemek ve otomatik test çalıştırmak için kullanılır
+- **Rust**: For backend application logic.
+- **cargo-watch**: Automatically restarts the application and runs tests on code changes.
+- **Docker & Docker Compose**: For containerizing and managing the application.
 
+## 🧠 Application Logic
+
+### Inventory Management
+The `InventoryManager` module provides functionalities to:
+- Add, edit, and delete products.
+- Retrieve the current inventory.
+
+### Transaction Management
+The `TransactionManager` module includes features to:
+- Record sales and purchases.
+- Load and view transaction history.
+
+### Reporting
+The `ReportManager` module enables:
+- Displaying inventory and transaction summaries.
+- Generating detailed reports for analysis.
