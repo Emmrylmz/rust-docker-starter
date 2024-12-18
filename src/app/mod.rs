@@ -1,8 +1,8 @@
 pub mod errors;
 pub mod inventory;
 pub mod reports;
-pub mod transactions;
 pub mod tests;
+pub mod transactions;
 
 use csv::{Reader, Writer};
 use reports::report_manager;
@@ -11,12 +11,13 @@ use crate::app::inventory::inventory_manager::{InventoryManager, Product};
 use crate::app::reports::report_manager::ReportManager;
 use crate::app::transactions::transaction::{TotalTransaction, TransactionManager};
 use std::error::Error;
-use std::{io};
+use std::io;
 
 pub struct App {
     inventory_manager: InventoryManager,
     transaction_manager: TransactionManager,
-    report_manager: ReportManager
+    report_manager: ReportManager,
+    is_authenticated: bool,
 }
 
 impl App {
@@ -42,16 +43,20 @@ impl App {
         let mut transaction_manager = TransactionManager::new();
         transaction_manager.load_transaction_history(transaction_history);
 
-
         Ok(Self {
             inventory_manager,
             transaction_manager,
             report_manager: ReportManager,
+            is_authenticated: false,
         })
     }
 
     pub fn run(&mut self) {
         loop {
+            if !self.authenticate() {
+                println!("Authentication failed. Exiting...");
+                return;
+            }
             println!("\n1. Manage Inventory");
             println!("2. Record Sale");
             println!("3. Record Purchase");
@@ -73,8 +78,29 @@ impl App {
 
         self.save_inventory("products.csv").unwrap();
     }
+    fn authenticate(&mut self) -> bool {
+        println!("\nPlease log in to continue");
+        println!("Username: ");
+        let mut username = String::new();
+        io::stdin().read_line(&mut username).unwrap();
 
-    fn manage_inventory(&mut self){
+        println!("Password: ");
+        let mut password = String::new();
+        io::stdin().read_line(&mut password).unwrap();
+
+        let is_valid = username.trim() == "admin" && password.trim() == "admin";
+        self.is_authenticated = is_valid;
+
+        if is_valid {
+            println!("Login successful!");
+        } else {
+            println!("Invalid credentials!");
+        }
+
+        is_valid
+    }
+
+    fn manage_inventory(&mut self) {
         self.inventory_manager.manage_inventory();
     }
 
